@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sparraps · Complete Project Handbook</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <style>
+    * { scroll-behavior: smooth; font-family: 'Inter', sans-serif; }
+    body { background: linear-gradient(145deg, #f4f0ff 0%, #e3daf5 100%); min-height: 100vh; }
+    .glass { background: rgba(255,255,255,0.38); backdrop-filter: blur(14px) saturate(180%); -webkit-backdrop-filter: blur(14px) saturate(180%); border: 1px solid rgba(255,255,255,0.55); box-shadow: 0 20px 40px -12px rgba(0,0,0,0.10); }
+    .glass-card { background: rgba(255,255,255,0.35); backdrop-filter: blur(10px) saturate(160%); -webkit-backdrop-filter: blur(10px) saturate(160%); border: 1px solid rgba(255,255,255,0.55); border-radius: 32px; transition: all 0.2s ease; }
+    .glass-card:hover { background: rgba(255,255,255,0.50); box-shadow: 0 16px 36px -8px rgba(80,40,160,0.15); transform: translateY(-3px); }
+    .btn-grad { background: linear-gradient(135deg, #a78bfa, #7c3aed); color: #fff; border: none; transition: 0.2s; }
+    .btn-grad:hover { transform: scale(1.03); opacity: 0.9; }
+    .nav-sticky { position: sticky; top: 0; z-index: 999; background: rgba(255,255,255,0.65); backdrop-filter: blur(20px); }
+    .accordion-toggle { cursor: pointer; user-select: none; }
+    .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+    .accordion-open .accordion-content { max-height: 2000px; }
+    .tab-active { background: rgba(124,58,237,0.15); border-bottom: 3px solid #7c3aed; }
+    .mermaid-wrapper { background: rgba(255,255,255,0.30); border-radius: 32px; padding: 1.8rem; border: 1px solid rgba(255,255,255,0.5); box-shadow: 0 8px 32px rgba(80,40,160,0.06); }
+    .mermaid-wrapper .mermaid { display: flex; justify-content: center; background: transparent; }
+    .back-to-top { position: fixed; bottom: 2rem; right: 2rem; z-index: 999; }
+    .badge-pill { background: rgba(124,58,237,0.12); padding: 0.2rem 0.9rem; border-radius: 40px; font-size: 0.75rem; font-weight: 600; color: #5b21b6; }
+    .dataflow-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    @media (max-width:640px) { .dataflow-grid { grid-template-columns: 1fr; } .mermaid-wrapper { padding: 0.8rem; } }
+    /* Mermaid custom styling via classes */
+    .mermaid .label { font-family: 'Inter', sans-serif !important; }
+    .mermaid .node rect, .mermaid .node circle { fill: rgba(124,58,237,0.10) !important; stroke: #7c3aed !important; stroke-width: 2px !important; rx: 12px !important; }
+    .mermaid .cluster rect { fill: rgba(124,58,237,0.04) !important; stroke: #a78bfa !important; stroke-width: 1.5px !important; rx: 16px !important; }
+    .mermaid .edgePath .path { stroke: #6d28d9 !important; stroke-width: 2.5px !important; }
+    .mermaid .arrowheadPath { fill: #6d28d9 !important; }
+    .mermaid .edgeLabel { background: rgba(255,255,255,0.7) !important; border-radius: 12px !important; padding: 2px 12px !important; font-size: 11px !important; font-weight: 500 !important; color: #4c1d95 !important; }
+  </style>
+</head>
+<body>
+
+<!-- STICKY NAV -->
+<nav class="nav-sticky px-4 sm:px-8 py-3 flex flex-wrap items-center justify-between gap-3 shadow-sm">
+  <div class="flex items-center gap-2 text-indigo-800 font-bold text-xl tracking-tight">
+    <i class="fas fa-car-side text-indigo-600"></i> Sparraps
+  </div>
+  <div class="flex flex-wrap items-center gap-4 text-sm font-medium">
+    <a href="#overview" class="hover:text-indigo-700 transition">Overview</a>
+    <a href="#entities" class="hover:text-indigo-700 transition">Entities</a>
+    <a href="#processes" class="hover:text-indigo-700 transition">Processes</a>
+    <a href="#datastores" class="hover:text-indigo-700 transition">Data Stores</a>
+    <a href="#dfd" class="hover:text-indigo-700 transition">DFD</a>
+    <a href="#rules" class="hover:text-indigo-700 transition">Rules</a>
+    <a href="#flows" class="hover:text-indigo-700 transition">Flows</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="pt-12 pb-6 px-4 max-w-7xl mx-auto">
+  <div class="glass-card p-8 md:p-14 text-center relative overflow-hidden">
+    <div class="absolute -top-24 -right-24 w-72 h-72 bg-purple-300/30 rounded-full blur-3xl"></div>
+    <div class="relative">
+      <h1 class="text-4xl md:text-6xl font-bold bg-gradient-to-r from-indigo-700 via-purple-700 to-pink-600 bg-clip-text text-transparent">Sparraps · Auto Parts</h1>
+      <p class="text-lg md:text-xl text-gray-700 mt-4 max-w-3xl mx-auto">India's smart vendor-fulfilment platform · Complete DFD Level 0–2 · 20 Data Stores · 15 Processes</p>
+      <div class="flex flex-wrap gap-3 justify-center mt-6">
+        <span class="bg-white/40 backdrop-blur px-4 py-1.5 rounded-full text-sm font-medium border border-white/50"><i class="fas fa-mobile-alt mr-2"></i>8 Platforms</span>
+        <span class="bg-white/40 backdrop-blur px-4 py-1.5 rounded-full text-sm font-medium border border-white/50"><i class="fas fa-database mr-2"></i>20 Data Stores</span>
+        <span class="bg-white/40 backdrop-blur px-4 py-1.5 rounded-full text-sm font-medium border border-white/50"><i class="fas fa-cogs mr-2"></i>15 Processes</span>
+        <span class="bg-white/40 backdrop-blur px-4 py-1.5 rounded-full text-sm font-medium border border-white/50"><i class="fas fa-shield-alt mr-2"></i>Confidentiality</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TABS: Role based -->
+<section class="px-4 max-w-7xl mx-auto mt-6">
+  <div class="flex flex-wrap gap-2 border-b border-white/30 pb-2">
+    <button class="tab-btn px-6 py-2.5 rounded-t-2xl font-semibold text-sm transition tab-active" data-tab="tab-customer"><i class="fas fa-user mr-2"></i>Customer</button>
+    <button class="tab-btn px-6 py-2.5 rounded-t-2xl font-semibold text-sm transition" data-tab="tab-vendor"><i class="fas fa-store mr-2"></i>Vendor</button>
+    <button class="tab-btn px-6 py-2.5 rounded-t-2xl font-semibold text-sm transition" data-tab="tab-admin"><i class="fas fa-user-shield mr-2"></i>Admin</button>
+  </div>
+  <div class="glass-card p-6 mt-4">
+    <div id="tab-customer" class="tab-content">
+      <h3 class="text-2xl font-bold text-indigo-800"><i class="fas fa-search mr-2"></i>Customer view</h3>
+      <p class="text-gray-700 mt-1">Search, request, pay, track, return — vendor identity hidden.</p>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-4 text-sm">
+        <div class="bg-white/40 p-3 rounded-2xl"><i class="fas fa-car text-indigo-600 mr-2"></i>Vehicle & product search (3 methods)</div>
+        <div class="bg-white/40 p-3 rounded-2xl"><i class="fas fa-hand-holding-heart text-indigo-600 mr-2"></i>Request product</div>
+        <div class="bg-white/40 p-3 rounded-2xl"><i class="fas fa-credit-card text-indigo-600 mr-2"></i>Razorpay payment</div>
+        <div class="bg-white/40 p-3 rounded-2xl"><i class="fas fa-box text-indigo-600 mr-2"></i>Order tracking (5 stages)</div>
+        <div class="bg-white/40 p-3 rounded-2xl"><i class="fas fa-undo-alt text-indigo-600 mr-2"></i>7-day return</div>
+        <div class="bg-white/40 p-3 rounded-2xl"><i class="fas fa-star text-indigo-600 mr-2"></i>Rate & review</div>
+        <div class="bg-white/40 p-3 rounded-2xl"><i class="fas fa-image text-indigo-600 mr-2"></i>Image search</div>
+        <div class="bg-white/40 p-3 rounded-2xl"><i class="fas fa-barcode text-indigo-600 mr-2"></i>Barcode verification</div>
+      </div>
+    </div>
+    <div id="tab-vendor" class="tab-content hidden">
+      <h3 class="text-2xl font-bold text-indigo-800"><i class="fas fa-truck mr-2"></i>Vendor view</h3>
+      <p class="text-gray-700 mt-1">KYC, subscription, select admin products, set price, upload live photo, dispatch.</p>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-4 text-sm">
+        <div class="bg-white/40 p-3 rounded-2xl"><i class="fas fa-id-card text-indigo-600 mr-2"></i>KYC & subscription</div>
+        <div class="bg-white/40 p-3 rounded-2xl"><i class="fas fa-tags text-indigo-600 mr-2"></i>Own price & stock</div>
+        <div class="bg-white/40 p-3 rounded-2xl"><i class="fas fa-camera text-indigo-600 mr-2"></i>Live product image</div>
+        <div class="bg-white/40 p-3 rounded-2xl"><i class="fas fa-clock text-indigo-600 mr-2"></i>Acceptance timer</div>
+        <div class="bg-white/40 p-3 rounded-2xl"><i class="fas fa-money-bill-wave text-indigo-600 mr-2"></i>Settlement (weekly/fortnightly)</div>
+        <div class="bg-white/40 p-3 rounded-2xl"><i class="fas fa-chart-line text-indigo-600 mr-2"></i>Performance reports</div>
+        <div class="bg-white/40 p-3 rounded-2xl"><i class="fas fa-crown text-indigo-600 mr-2"></i>Priority tiers (5)</div>
+        <div class="bg-white/40 p-3 rounded-2xl"><i class="fas fa-handshake text-indigo-600 mr-2"></i>Confidentiality</div>
+      </div>
+    </div>
+    <div id="tab-admin" class="tab-content hidden">
+      <h3 class="text-2xl font-bold text-indigo-800"><i class="fas fa-sliders-h mr-2"></i>Admin view</h3>
+      <p class="text-gray-700 mt-1">Full control: product listings, vendor priority, timers, commissions, returns, settlements.</p>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-4 text-sm">
+        <div class="bg-white/40 p-3 rounded-2xl"><i class="fas fa-list-ul text-indigo-600 mr-2"></i>Product & vehicle master</div>
+        <div class="bg-white/40 p-3 rounded-2xl"><i class="fas fa-crown text-indigo-600 mr-2"></i>Priority rules (5 tiers)</div>
+        <div class="bg-white/40 p-3 rounded-2xl"><i class="fas fa-hourglass-half text-indigo-600 mr-2"></i>Request timers</div>
+        <div class="bg-white/40 p-3 rounded-2xl"><i class="fas fa-people-arrows text-indigo-600 mr-2"></i>Vendor KYC & subscriptions</div>
+        <div class="bg-white/40 p-3 rounded-2xl"><i class="fas fa-hand-holding-usd text-indigo-600 mr-2"></i>Commission & settlement</div>
+        <div class="bg-white/40 p-3 rounded-2xl"><i class="fas fa-flag text-indigo-600 mr-2"></i>Audit logs & reports</div>
+        <div class="bg-white/40 p-3 rounded-2xl"><i class="fas fa-truck text-indigo-600 mr-2"></i>Logistics rules</div>
+        <div class="bg-white/40 p-3 rounded-2xl"><i class="fas fa-undo text-indigo-600 mr-2"></i>Return rules</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OVERVIEW + Platforms -->
+<div id="overview" class="scroll-mt-24"></div>
+<section class="px-4 max-w-7xl mx-auto mt-10">
+  <h2 class="text-3xl font-bold text-indigo-900 flex items-center gap-3"><i class="fas fa-cubes text-indigo-600"></i> Project overview</h2>
+  <div class="glass-card p-6 mt-4">
+    <p class="text-gray-700"><strong>Sparraps</strong> – auto‑parts e‑commerce & vendor fulfilment · <span class="bg-indigo-100 px-3 py-1 rounded-full text-sm font-medium">India</span></p>
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4">
+      <div class="bg-white/30 p-3 rounded-2xl text-center"><i class="fas fa-mobile-alt text-2xl text-indigo-600"></i><br class="hidden sm:block"><span class="text-sm">Customer Android</span></div>
+      <div class="bg-white/30 p-3 rounded-2xl text-center"><i class="fab fa-apple text-2xl text-indigo-600"></i><br class="hidden sm:block"><span class="text-sm">Customer iOS</span></div>
+      <div class="bg-white/30 p-3 rounded-2xl text-center"><i class="fas fa-globe text-2xl text-indigo-600"></i><br class="hidden sm:block"><span class="text-sm">Customer Website</span></div>
+      <div class="bg-white/30 p-3 rounded-2xl text-center"><i class="fas fa-robot text-2xl text-indigo-600"></i><br class="hidden sm:block"><span class="text-sm">Vendor Android</span></div>
+      <div class="bg-white/30 p-3 rounded-2xl text-center"><i class="fab fa-app-store-ios text-2xl text-indigo-600"></i><br class="hidden sm:block"><span class="text-sm">Vendor iOS</span></div>
+      <div class="bg-white/30 p-3 rounded-2xl text-center"><i class="fas fa-laptop text-2xl text-indigo-600"></i><br class="hidden sm:block"><span class="text-sm">Vendor Web Panel</span></div>
+      <div class="bg-white/30 p-3 rounded-2xl text-center"><i class="fas fa-user-cog text-2xl text-indigo-600"></i><br class="hidden sm:block"><span class="text-sm">Admin Web Panel</span></div>
+      <div class="bg-white/30 p-3 rounded-2xl text-center"><i class="fas fa-user-shield text-2xl text-indigo-600"></i><br class="hidden sm:block"><span class="text-sm">Admin App</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ENTITIES (7) -->
+<div id="entities" class="scroll-mt-24"></div>
+<section class="px-4 max-w-7xl mx-auto mt-10">
+  <h2 class="text-3xl font-bold text-indigo-900 flex items-center gap-3"><i class="fas fa-people-arrows text-indigo-600"></i> 7 External entities</h2>
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
+    <div class="glass-card p-4 flex items-start gap-3"><i class="fas fa-user text-indigo-600 text-xl mt-1"></i><div><strong>Customer</strong><br><span class="text-sm text-gray-600">search, request, pay, return</span></div></div>
+    <div class="glass-card p-4 flex items-start gap-3"><i class="fas fa-store text-indigo-600 text-xl mt-1"></i><div><strong>Vendor</strong><br><span class="text-sm text-gray-600">KYC, price, stock, dispatch</span></div></div>
+    <div class="glass-card p-4 flex items-start gap-3"><i class="fas fa-user-tie text-indigo-600 text-xl mt-1"></i><div><strong>Sparraps Admin</strong><br><span class="text-sm text-gray-600">product master, rules, settlements</span></div></div>
+    <div class="glass-card p-4 flex items-start gap-3"><i class="fas fa-credit-card text-indigo-600 text-xl mt-1"></i><div><strong>Razorpay</strong><br><span class="text-sm text-gray-600">payments & refunds</span></div></div>
+    <div class="glass-card p-4 flex items-start gap-3"><i class="fas fa-shipping-fast text-indigo-600 text-xl mt-1"></i><div><strong>Courier/Logistics</strong><br><span class="text-sm text-gray-600">pickup, tracking, delivery</span></div></div>
+    <div class="glass-card p-4 flex items-start gap-3"><i class="fab fa-whatsapp text-indigo-600 text-xl mt-1"></i><div><strong>WhatsApp/Notification</strong><br><span class="text-sm text-gray-600">alerts</span></div></div>
+    <div class="glass-card p-4 flex items-start gap-3 sm:col-span-2 md:col-span-1"><i class="fas fa-industry text-indigo-600 text-xl mt-1"></i><div><strong>Manufacturer/Warranty Centre</strong><br><span class="text-sm text-gray-600">warranty validation</span></div></div>
+  </div>
+</section>
+
+<!-- PROCESSES (15) with details -->
+<div id="processes" class="scroll-mt-24"></div>
+<section class="px-4 max-w-7xl mx-auto mt-10">
+  <h2 class="text-3xl font-bold text-indigo-900 flex items-center gap-3"><i class="fas fa-cogs text-indigo-600"></i> 15 Main processes</h2>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+    <div class="glass-card p-4 text-sm hover:shadow-lg transition"><span class="font-bold text-indigo-700">1.0</span> Customer Registration & Login</div>
+    <div class="glass-card p-4 text-sm hover:shadow-lg transition"><span class="font-bold text-indigo-700">2.0</span> Vehicle & Product Search (3 methods)</div>
+    <div class="glass-card p-4 text-sm hover:shadow-lg transition"><span class="font-bold text-indigo-700">3.0</span> Product Request Management</div>
+    <div class="glass-card p-4 text-sm hover:shadow-lg transition"><span class="font-bold text-indigo-700">4.0</span> Vendor Request Distribution</div>
+    <div class="glass-card p-4 text-sm hover:shadow-lg transition"><span class="font-bold text-indigo-700">5.0</span> Vendor Price & Availability</div>
+    <div class="glass-card p-4 text-sm hover:shadow-lg transition"><span class="font-bold text-indigo-700">6.0</span> Product Verification (image processing)</div>
+    <div class="glass-card p-4 text-sm hover:shadow-lg transition"><span class="font-bold text-indigo-700">7.0</span> Customer Product Approval</div>
+    <div class="glass-card p-4 text-sm hover:shadow-lg transition"><span class="font-bold text-indigo-700">8.0</span> Payment Processing (Razorpay)</div>
+    <div class="glass-card p-4 text-sm hover:shadow-lg transition"><span class="font-bold text-indigo-700">9.0</span> Order Fulfilment + Barcode</div>
+    <div class="glass-card p-4 text-sm hover:shadow-lg transition"><span class="font-bold text-indigo-700">10.0</span> Delivery & Tracking (5 stages)</div>
+    <div class="glass-card p-4 text-sm hover:shadow-lg transition"><span class="font-bold text-indigo-700">11.0</span> Return & Refund (7-day)</div>
+    <div class="glass-card p-4 text-sm hover:shadow-lg transition"><span class="font-bold text-indigo-700">12.0</span> Vendor Settlement (deductions)</div>
+    <div class="glass-card p-4 text-sm hover:shadow-lg transition"><span class="font-bold text-indigo-700">13.0</span> Subscription Management</div>
+    <div class="glass-card p-4 text-sm hover:shadow-lg transition"><span class="font-bold text-indigo-700">14.0</span> Customer Support</div>
+    <div class="glass-card p-4 text-sm hover:shadow-lg transition"><span class="font-bold text-indigo-700">15.0</span> Reports & Analytics</div>
+  </div>
+  
+  <!-- Process detail table -->
+  <div class="glass-card p-5 mt-4 overflow-x-auto">
+    <h4 class="font-bold text-indigo-800 mb-3"><i class="fas fa-table mr-2"></i>Process Input/Output/Data Store</h4>
+    <table class="w-full text-sm">
+      <thead class="bg-indigo-50/50"><tr><th class="p-2 text-left">Process</th><th class="p-2 text-left">Input</th><th class="p-2 text-left">Output</th><th class="p-2 text-left">Data Store</th></tr></thead>
+      <tbody class="divide-y divide-gray-200/30">
+        <tr><td class="p-2 font-medium">1.0 Customer Mgmt</td><td class="p-2 text-xs">Mobile, Email, OTP, Name, Address, Vehicle</td><td class="p-2 text-xs">Account, Login, Saved address, Vehicle</td><td class="p-2 text-xs">D1</td></tr>
+        <tr><td class="p-2 font-medium">2.0 Search</td><td class="p-2 text-xs">Vehicle, Keyword, OEM, Image</td><td class="p-2 text-xs">Product suggestions, Compatible list</td><td class="p-2 text-xs">D4,D5,D6</td></tr>
+        <tr><td class="p-2 font-medium">3.0 Product Request</td><td class="p-2 text-xs">Customer ref, Product ref, Vehicle, Condition, Qty, PIN, Image, Notes</td><td class="p-2 text-xs">Request number, status</td><td class="p-2 text-xs">D9</td></tr>
+        <tr><td class="p-2 font-medium">4.0 Vendor Priority</td><td class="p-2 text-xs">Request, Vendor list, Rules</td><td class="p-2 text-xs">Priority-sorted vendors</td><td class="p-2 text-xs">D9,D2,D8</td></tr>
+        <tr><td class="p-2 font-medium">5.0 Vendor Response</td><td class="p-2 text-xs">Price, Availability, Qty, Condition, Warranty, Dispatch time</td><td class="p-2 text-xs">Vendor response record</td><td class="p-2 text-xs">D7</td></tr>
+        <tr><td class="p-2 font-medium">6.0 Verification</td><td class="p-2 text-xs">Image</td><td class="p-2 text-xs">Verified image</td><td class="p-2 text-xs">D10</td></tr>
+        <tr><td class="p-2 font-medium">7.0 Approval</td><td class="p-2 text-xs">Product option</td><td class="p-2 text-xs">Approval/Rejection</td><td class="p-2 text-xs">D9</td></tr>
+        <tr><td class="p-2 font-medium">8.0 Payment</td><td class="p-2 text-xs">Payment info</td><td class="p-2 text-xs">Payment confirmation</td><td class="p-2 text-xs">D13</td></tr>
+        <tr><td class="p-2 font-medium">9.0 Order</td><td class="p-2 text-xs">Order details</td><td class="p-2 text-xs">Order record, Barcode</td><td class="p-2 text-xs">D12</td></tr>
+        <tr><td class="p-2 font-medium">10.0 Delivery</td><td class="p-2 text-xs">Shipment details</td><td class="p-2 text-xs">Tracking updates</td><td class="p-2 text-xs">D14</td></tr>
+        <tr><td class="p-2 font-medium">11.0 Return</td><td class="p-2 text-xs">Return request</td><td class="p-2 text-xs">Refund status</td><td class="p-2 text-xs">D15</td></tr>
+        <tr><td class="p-2 font-medium">12.0 Settlement</td><td class="p-2 text-xs">Order, Deductions</td><td class="p-2 text-xs">Settlement record</td><td class="p-2 text-xs">D16</td></tr>
+        <tr><td class="p-2 font-medium">13.0 Subscription</td><td class="p-2 text-xs">KYC, Plan, Payment</td><td class="p-2 text-xs">Subscription status</td><td class="p-2 text-xs">D8</td></tr>
+        <tr><td class="p-2 font-medium">14.0 Support</td><td class="p-2 text-xs">Ticket</td><td class="p-2 text-xs">Resolution</td><td class="p-2 text-xs">D18</td></tr>
+        <tr><td class="p-2 font-medium">15.0 Reports</td><td class="p-2 text-xs">System data</td><td class="p-2 text-xs">Reports</td><td class="p-2 text-xs">D20</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- DATA STORES (20) -->
+<div id="datastores" class="scroll-mt-24"></div>
+<section class="px-4 max-w-7xl mx-auto mt-10">
+  <h2 class="text-3xl font-bold text-indigo-900 flex items-center gap-3"><i class="fas fa-database text-indigo-600"></i> 20 Data stores</h2>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mt-4">
+    <div class="glass-card p-3 text-sm"><span class="font-bold text-indigo-700">D1</span> Customer Database</div>
+    <div class="glass-card p-3 text-sm"><span class="font-bold text-indigo-700">D2</span> Vendor Database</div>
+    <div class="glass-card p-3 text-sm"><span class="font-bold text-indigo-700">D3</span> Admin & Employee DB</div>
+    <div class="glass-card p-3 text-sm"><span class="font-bold text-indigo-700">D4</span> Vehicle Master DB</div>
+    <div class="glass-card p-3 text-sm"><span class="font-bold text-indigo-700">D5</span> Product Catalogue DB</div>
+    <div class="glass-card p-3 text-sm"><span class="font-bold text-indigo-700">D6</span> Product Compatibility DB</div>
+    <div class="glass-card p-3 text-sm"><span class="font-bold text-indigo-700">D7</span> Vendor Product & Price DB</div>
+    <div class="glass-card p-3 text-sm"><span class="font-bold text-indigo-700">D8</span> Subscription Plan DB</div>
+    <div class="glass-card p-3 text-sm"><span class="font-bold text-indigo-700">D9</span> Product Request DB</div>
+    <div class="glass-card p-3 text-sm"><span class="font-bold text-indigo-700">D10</span> Product Image DB</div>
+    <div class="glass-card p-3 text-sm"><span class="font-bold text-indigo-700">D11</span> Cart & Wishlist DB</div>
+    <div class="glass-card p-3 text-sm"><span class="font-bold text-indigo-700">D12</span> Order DB</div>
+    <div class="glass-card p-3 text-sm"><span class="font-bold text-indigo-700">D13</span> Payment DB</div>
+    <div class="glass-card p-3 text-sm"><span class="font-bold text-indigo-700">D14</span> Shipment & Tracking DB</div>
+    <div class="glass-card p-3 text-sm"><span class="font-bold text-indigo-700">D15</span> Return & Refund DB</div>
+    <div class="glass-card p-3 text-sm"><span class="font-bold text-indigo-700">D16</span> Vendor Settlement DB</div>
+    <div class="glass-card p-3 text-sm"><span class="font-bold text-indigo-700">D17</span> Reviews & Ratings DB</div>
+    <div class="glass-card p-3 text-sm"><span class="font-bold text-indigo-700">D18</span> Support Ticket DB</div>
+    <div class="glass-card p-3 text-sm"><span class="font-bold text-indigo-700">D19</span> Notification DB</div>
+    <div class="glass-card p-3 text-sm"><span class="font-bold text-indigo-700">D20</span> Reports & Audit Log DB</div>
+  </div>
+</section>
+
+<!-- DFD SECTION - COMPLETELY REDESIGNED -->
+<div id="dfd" class="scroll-mt-24"></div>
+<section class="px-4 max-w-7xl mx-auto mt-10">
+  <h2 class="text-3xl font-bold text-indigo-900 flex items-center gap-3"><i class="fas fa-project-diagram text-indigo-600"></i> DFD Diagrams (Level 0, 1, 2)</h2>
+  
+  <!-- ========== DFD LEVEL 0 – CONTEXT DIAGRAM ========== -->
+<section id="dfd-level0" class="px-4 max-w-7xl mx-auto py-12" data-aos="fade-up">
+  <h2 class="text-3xl font-bold mb-6 flex items-center gap-3 text-slate-800">
+    <span class="w-1 h-8 bg-gradient-to-b from-indigo-500 to-purple-500 rounded-full"></span> 
+    Level 0 – Context Diagram
+  </h2>
+
+  <div class="glass-card p-6">
+    <div class="flex items-center gap-3 mb-4">
+      <span class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-1.5 rounded-full text-xs font-bold tracking-wide">LEVEL 0</span>
+      <h3 class="font-semibold text-lg text-slate-800">Context Diagram</h3>
+    </div>
+
+    <!-- Mermaid Diagram -->
+    <div class="mermaid-wrapper bg-white/50 rounded-xl p-4 border border-slate-200/60">
+      <div class="mermaid">
+        graph TD
+        Customer["👤 CUSTOMER"] -->|"Search, Request, Payment, Return"| System["SPARRAPS SYSTEM"]
+        System -->|"Catalogue, Price, Order, Tracking"| Customer
+        
+        Vendor["🏪 VENDOR"] -->|"Price, Stock, Photo, Dispatch"| System
+        System -->|"Requests, Orders, Settlements"| Vendor
+        
+        Admin["🛠️ ADMIN"] -->|"Products, Rules, Plans, Settings"| System
+        System -->|"Reports, Alerts, Audit Logs"| Admin
+        
+        Razorpay["💳 RAZORPAY"] -->|"Payment"| System
+        System -->|"Refund"| Razorpay
+        
+        Courier["📦 COURIER"] -->|"Tracking"| System
+        System -->|"Pickup Request"| Courier
+      </div>
+    </div>
+
+    <!-- Data Flow Details - Compact Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-6">
+      
+      <!-- Customer -->
+      <div class="bg-indigo-50/80 rounded-xl p-4 border border-indigo-100">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-lg">👤</span>
+          <span class="font-bold text-indigo-700 text-sm">CUSTOMER</span>
+        </div>
+        <div class="grid grid-cols-2 gap-1 text-xs">
+          <div>
+            <span class="font-semibold text-indigo-600">Provides:</span>
+            <ul class="text-slate-600 space-y-0.5 mt-1">
+              <li>• Registration / Login</li>
+              <li>• Vehicle &amp; Search</li>
+              <li>• Request &amp; Image</li>
+              <li>• Payment &amp; Return</li>
+              <li>• Review &amp; Support</li>
+            </ul>
+          </div>
+          <div>
+            <span class="font-semibold text-indigo-600">Receives:</span>
+            <ul class="text-slate-600 space-y-0.5 mt-1">
+              <li>• Catalogue &amp; Price</li>
+              <li>• Order &amp; Tracking</li>
+              <li>• Invoice &amp; Refund</li>
+              <li>• Support Response</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vendor -->
+      <div class="bg-purple-50/80 rounded-xl p-4 border border-purple-100">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-lg">🏪</span>
+          <span class="font-bold text-purple-700 text-sm">VENDOR</span>
+        </div>
+        <div class="grid grid-cols-2 gap-1 text-xs">
+          <div>
+            <span class="font-semibold text-purple-600">Provides:</span>
+            <ul class="text-slate-600 space-y-0.5 mt-1">
+              <li>• Registration &amp; KYC</li>
+              <li>• Subscription</li>
+              <li>• Price &amp; Stock</li>
+              <li>• Photo &amp; Warranty</li>
+              <li>• Dispatch &amp; Return</li>
+            </ul>
+          </div>
+          <div>
+            <span class="font-semibold text-purple-600">Receives:</span>
+            <ul class="text-slate-600 space-y-0.5 mt-1">
+              <li>• KYC / Subscription</li>
+              <li>• Requests &amp; Timer</li>
+              <li>• Order Status</li>
+              <li>• Settlement &amp; Reports</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Admin -->
+      <div class="bg-emerald-50/80 rounded-xl p-4 border border-emerald-100">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-lg">🛠️</span>
+          <span class="font-bold text-emerald-700 text-sm">ADMIN</span>
+        </div>
+        <div class="grid grid-cols-2 gap-1 text-xs">
+          <div>
+            <span class="font-semibold text-emerald-600">Provides:</span>
+            <ul class="text-slate-600 space-y-0.5 mt-1">
+              <li>• Products &amp; Vehicles</li>
+              <li>• Plans &amp; Commission</li>
+              <li>• Priority Rules</li>
+              <li>• Timers &amp; Settings</li>
+            </ul>
+          </div>
+          <div>
+            <span class="font-semibold text-emerald-600">Receives:</span>
+            <ul class="text-slate-600 space-y-0.5 mt-1">
+              <li>• Customer / Vendor Info</li>
+              <li>• Orders &amp; Payments</li>
+              <li>• Returns &amp; Refunds</li>
+              <li>• Reports &amp; Audit Logs</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- External -->
+      <div class="bg-amber-50/80 rounded-xl p-4 border border-amber-100">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-lg">🔗</span>
+          <span class="font-bold text-amber-700 text-sm">EXTERNAL</span>
+        </div>
+        <div class="grid grid-cols-2 gap-1 text-xs">
+          <div>
+            <span class="font-semibold text-amber-600">Razorpay:</span>
+            <ul class="text-slate-600 space-y-0.5 mt-1">
+              <li>• Payment Processing</li>
+              <li>• Refund Management</li>
+            </ul>
+          </div>
+          <div>
+            <span class="font-semibold text-amber-600">Courier:</span>
+            <ul class="text-slate-600 space-y-0.5 mt-1">
+              <li>• Pickup Requests</li>
+              <li>• Tracking Updates</li>
+            </ul>
+          </div>
+        </div>
+        <div class="mt-2 text-xs text-slate-500 border-t border-amber-200/50 pt-2">
+          <span class="font-semibold">Notifications:</span> WhatsApp, SMS, Email
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Legend -->
+    <div class="mt-4 flex flex-wrap gap-3 text-xs text-slate-600 bg-white/60 rounded-xl p-3 border border-slate-200/60">
+      <span class="font-semibold">Legend:</span>
+      <span class="flex items-center gap-1"><span class="w-3 h-3 bg-indigo-100 border border-indigo-300 rounded"></span> Customer</span>
+      <span class="flex items-center gap-1"><span class="w-3 h-3 bg-purple-100 border border-purple-300 rounded"></span> Vendor</span>
+      <span class="flex items-center gap-1"><span class="w-3 h-3 bg-emerald-100 border border-emerald-300 rounded"></span> Admin</span>
+      <span class="flex items-center gap-1"><span class="w-3 h-3 bg-amber-100 border border-amber-300 rounded"></span> External</span>
+      <span class="flex items-center gap-1"><span class="w-3 h-3 bg-slate-200 border border-slate-400 rounded-full"></span> Data Flow</span>
+    </div>
+  </div>
+</section>
+  
+  <!-- Level 1 -->
+  <div class="mermaid-wrapper glass-card mt-4 p-6">
+    <div class="flex items-center gap-3 mb-4">
+      <span class="bg-purple-600 text-white px-4 py-1 rounded-full text-xs font-bold">LEVEL 1</span>
+      <h3 class="font-semibold text-lg">Complete System Flow</h3>
+    </div>
+    <div class="mermaid">
+      graph TD
+      C[<b>Customer</b>] --> 1["1.0 Customer Mgmt"]
+      1 --> D1[("D1 Customer")]
+      C --> 2["2.0 Search"]
+      2 --> D4[("D4 Vehicle")] & D5[("D5 Product")]
+      C --> 3["3.0 Product Request"]
+      3 --> D9[("D9 Request")]
+      3 --> 4["4.0 Vendor Priority"]
+      4 --> 5["5.0 Vendor Response"]
+      5 --> D7[("D7 Vendor Price")]
+      5 --> 6["6.0 Product Verification"]
+      6 --> D10[("D10 Image")]
+      6 --> C
+      C --> 7["7.0 Payment"]
+      7 --> E[<b>Razorpay</b>]
+      7 --> 8["8.0 Order"]
+      8 --> D12[("D12 Order")]
+      8 --> 9["9.0 Logistics"]
+      9 --> F[<b>Logistics</b>]
+      9 --> C
+    </div>
+  </div>
+  
+  <!-- Level 2 - Detailed Flows -->
+  <div class="grid grid-cols-1 md:grid-cols-1 gap-5 mt-4">
+    <div class="mermaid-wrapper glass-card p-5">
+      <div class="flex items-center gap-2 mb-3"><span class="bg-emerald-500 text-white px-3 py-0.5 rounded-full text-xs font-bold">L2</span><h4 class="font-semibold"><i class="fas fa-search text-indigo-600 mr-1"></i>Product Search Flow</h4></div>
+      <div class="mermaid">
+        graph TD
+        C[<b>Customer</b>] --> SM{Search Method}
+        SM -->|Step| V["Select: Company→Model→Year→Variant→Fuel→Category→Subcategory<br>Example: Maruti→Swift→2022→VXI→Petrol→Exterior→Front Bumper"]
+        SM -->|Direct| K["Keyword / OEM / Part Number<br>Example: 'Swift 2022 front bumper'<br>System suggests: Maruti→Swift→2022→Exterior→Front Bumper"]
+        SM -->|Image| IA["Upload image → Detect category → Suggest matches<br>If uncertain → Send to Admin"]
+        V --> COMP[Compatibility Check]
+        K --> COMP
+        IA --> COMP
+        COMP -->|Match| LIST[Show Products + Request Option]
+        COMP -->|No| REQ[Create Find-Part Request]
+      </div>
+    </div>
+    
+    <div class="mermaid-wrapper glass-card p-5">
+      <div class="flex items-center gap-2 mb-3"><span class="bg-emerald-500 text-white px-3 py-0.5 rounded-full text-xs font-bold">L2</span><h4 class="font-semibold"><i class="fas fa-route text-indigo-600 mr-1"></i>Vendor Priority Flow</h4></div>
+      <div class="mermaid">
+        graph TD
+        R[Product Request] --> S["Sparraps Own Vendor<br>No subscription · Highest priority"]
+        S -->|Accept| PRICE["Submit Own Price & Photo<br>Timer: Admin configurable"]
+        S -->|Reject/Timeout| SUB["Subscribed Vendors<br>Sorted by Priority"]
+        SUB --> PRIORITY["<b>Priority Tiers:</b><br>1. Platinum · 2. Gold · 3. Silver · 4. Basic · 5. Trial"]
+        PRIORITY --> V1["Vendor A<br>Highest Plan"]
+        V1 -->|Accept| PRICE
+        V1 -->|Reject/Timeout| V2["Next Vendor<br>By: Plan, Distance, Specialisation, Performance, Rating, Response Speed, Acceptance Rate, Return %, Cancellation %"]
+      </div>
+    </div>
+    
+    <div class="mermaid-wrapper glass-card p-5">
+      <div class="flex items-center gap-2 mb-3"><span class="bg-emerald-500 text-white px-3 py-0.5 rounded-full text-xs font-bold">L2</span><h4 class="font-semibold"><i class="fas fa-camera text-indigo-600 mr-1"></i>Vendor Response & Image</h4></div>
+      <div class="mermaid">
+        graph TD
+        V[<b>Vendor</b>] --> ACCEPT[Accept Request]
+        ACCEPT --> ENTER["Enter:<br>• Own Price<br>• Availability<br>• Quantity<br>• Condition<br>• Warranty<br>• Dispatch Time"]
+        ENTER --> PHOTO["Capture Live Product Photograph<br>(preferably through Vendor App)"]
+        PHOTO --> BG["<b>Image Processing:</b><br>• Remove Background → White<br>• Improve Brightness & Visibility<br>• Crop Surroundings<br>• Check Blur<br>• Detect Duplicate Images<br>• Add Sparraps Watermark<br>• Save Original & Edited"]
+        BG -->|Approved| SAVE[Save to D10 Image DB]
+        BG -->|Reject| RETRY[Ask Vendor to Retake]
+      </div>
+    </div>
+    
+    <div class="mermaid-wrapper glass-card p-5">
+      <div class="flex items-center gap-2 mb-3"><span class="bg-emerald-500 text-white px-3 py-0.5 rounded-full text-xs font-bold">L2</span><h4 class="font-semibold"><i class="fas fa-box text-indigo-600 mr-1"></i>Order & Delivery Flow</h4></div>
+      <div class="mermaid">
+        graph TD
+        P[Payment Success] --> CREATE["Create Confirmed Order<br>Generate Unique Barcode/QR"]
+        CREATE --> PACK["Vendor Packs Product<br>Attach Barcode"]
+        PACK --> COURIER["Courier Pickup Request"]
+        COURIER --> TRACK["<b>Customer Tracking Stages:</b><br>1. Order Confirmed<br>2. Product Packed<br>3. Shipped<br>4. Out for Delivery<br>5. Delivered"]
+        TRACK --> DELIVERY[Delivered]
+        DELIVERY --> RETURN["Start 7-Day Return Period<br>from Delivery Date"]
+      </div>
+    </div>
+    
+    <div class="mermaid-wrapper glass-card p-5">
+      <div class="flex items-center gap-2 mb-3"><span class="bg-emerald-500 text-white px-3 py-0.5 rounded-full text-xs font-bold">L2</span><h4 class="font-semibold"><i class="fas fa-barcode text-indigo-600 mr-1"></i>Barcode Verification</h4></div>
+      <div class="mermaid">
+        graph TD
+        O[Order Confirmed] --> GEN["Generate Unique Barcode"]
+        GEN --> LINK["<b>Linked Data:</b><br>• Order ID<br>• Product ID<br>• Vendor ID<br>• Product Image<br>• Product Condition<br>• Serial Number<br>• Dispatch Date"]
+        LINK --> ATTACH[Vendor Attaches Barcode to Product]
+        ATTACH --> DEL[Delivered]
+        DEL --> RET[If Return Requested]
+        RET --> SCAN[Scan & Verify Barcode]
+        SCAN -->|Valid| APPROVE["Continue Return Verification<br>(Customer-facing barcode hides vendor info)"]
+        SCAN -->|Invalid| REJECT["Hold or Reject Return"]
+      </div>
+    </div>
+    
+    <div class="mermaid-wrapper glass-card p-5">
+      <div class="flex items-center gap-2 mb-3"><span class="bg-emerald-500 text-white px-3 py-0.5 rounded-full text-xs font-bold">L2</span><h4 class="font-semibold"><i class="fas fa-undo text-indigo-600 mr-1"></i>Return & Refund Flow</h4></div>
+      <div class="mermaid">
+        graph TD
+        C[<b>Customer</b>] --> REQ["Return Request<br>Within 7 Days of Delivery"]
+        REQ --> SUB["Submit:<br>• Reason<br>• Images<br>• Video<br>• Barcode Image"]
+        SUB --> ADMIN[Admin Review]
+        ADMIN -->|Reject| REJECT_REASON["<b>Rejection Reasons:</b><br>• After 7 days<br>• Barcode missing/damaged<br>• Product replaced<br>• Serial mismatch<br>• Product installed/altered<br>• Customer damaged<br>• Missing parts/accessories<br>• False information"]
+        ADMIN -->|Approve| PICK["Reverse Courier Pickup<br>Return Product to Source"]
+        PICK --> VERIFY["Vendor/Admin Verification"]
+        VERIFY -->|Valid| REFUND["Razorpay Refund<br>Customer Notified"]
+        VERIFY -->|Invalid| DISPUTE["Create Dispute / Reject Refund"]
+      </div>
+    </div>
+    
+    <div class="mermaid-wrapper glass-card p-5">
+      <div class="flex items-center gap-2 mb-3"><span class="bg-emerald-500 text-white px-3 py-0.5 rounded-full text-xs font-bold">L2</span><h4 class="font-semibold"><i class="fas fa-crown text-indigo-600 mr-1"></i>Vendor Subscription Flow</h4></div>
+      <div class="mermaid">
+        graph TD
+        V[<b>Vendor</b>] --> REG[Register]
+        REG --> KYC["Submit KYC<br>• GST • PAN • Address • Bank"]
+        KYC --> ADMIN_KYC[Admin Verifies KYC]
+        ADMIN_KYC -->|Reject| RETRY[Resubmit KYC]
+        ADMIN_KYC -->|Approve| PLANS["Show Subscription Plans<br>Trial · Basic · Silver · Gold · Platinum"]
+        PLANS --> SELECT["Select Plan<br>(Higher plan = Higher priority)"]
+        SELECT --> PAY["Razorpay Payment"]
+        PAY --> ACTIVE["Activate Subscription<br>Assign Request Priority"]
+        ACTIVE --> RECEIVE["Vendor Receives Requests"]
+        
+        ACTIVE --> EXPIRE["<b>On Expiry:</b><br>• Stop New Product Requests<br>• Keep Account & History Active<br>• Send Renewal Notifications<br>• Vendor Renews → Restart Requests"]
+      </div>
+    </div>
+    
+    <div class="mermaid-wrapper glass-card p-5">
+      <div class="flex items-center gap-2 mb-3"><span class="bg-emerald-500 text-white px-3 py-0.5 rounded-full text-xs font-bold">L2</span><h4 class="font-semibold"><i class="fas fa-hand-holding-usd text-indigo-600 mr-1"></i>Vendor Settlement Flow</h4></div>
+      <div class="mermaid">
+        graph TD
+        DEL[Order Delivered] --> HOLD["Start Return Hold Period<br>(7 days from delivery)"]
+        HOLD --> CHECK["Check:<br>Return or Dispute?"]
+        CHECK -->|No Return| CALC["Calculate Vendor Payable<br>Order Value - Deductions"]
+        CHECK -->|Return/Dispute| ADJUST["Hold/Adjust Vendor Payment"]
+        CALC --> DEDUCT["<b>Deductions:</b><br>• Platform Commission<br>• Tax/TDS<br>• Logistics Charges<br>• Penalties<br>• Refund Adjustment"]
+        DEDUCT --> APPROVE["Admin Approval<br>or Automatic Approval"]
+        APPROVE --> TRANSFER["Transfer Payment to Vendor"]
+        TRANSFER --> STATEMENT["Generate Settlement Statement"]
+        TRANSFER --> FREQ["<b>Frequency:</b><br>Weekly · Fortnightly · Monthly · Custom"]
+      </div>
+    </div>
+  </div>
+  
+ <!-- ========== END-TO-END DATA FLOW ========== -->
+<section class="px-4 max-w-7xl mx-auto py-12" data-aos="fade-up">
+  <div class="glass-card p-6">
+    <div class="flex items-center gap-3 mb-6">
+      <span class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-1.5 rounded-full text-xs font-bold tracking-wide">END-TO-END</span>
+      <h3 class="font-semibold text-xl text-slate-800">Complete 24-Step Data Flow</h3>
+    </div>
+    
+    <!-- Flow Diagram -->
+    <div class="mermaid-wrapper bg-white/50 rounded-xl p-4 border border-slate-200/60">
+      <div class="mermaid">
+        graph LR
+        A["1. Register"] --> B["2. Select Vehicle"] --> C["3. Search"] --> D["4. Suggestions"] --> E["5. Select Product"] --> F["6. Submit Request"] --> G["7. Sparraps Own"] --> H["8. Accept/Reject"] --> I["9. Subscribed Vendors"] --> J["10. Accept/Reject"] --> K["11. Enter Price"] --> L["12. Upload Photo"] --> M["13. Verify Image"] --> N["14. Customer Sees"] --> O["15. Accepts"] --> P["16. Payment"] --> Q["17. Order Confirmed"] --> R["18. Barcode"] --> S["19. Courier"] --> T["20. Track"] --> U["21. Delivered"] --> V["22. Return Period"] --> W["23. Settlement"] --> X["24. Complete"]
+      </div>
+    </div>
+
+    <!-- Step Details in Compact Grid -->
+    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-2 mt-6">
+      <div class="bg-indigo-50 p-2 rounded-lg text-center border border-indigo-100">
+        <span class="text-xs font-bold text-indigo-700">1-6</span>
+        <p class="text-[10px] text-slate-600">Register → Vehicle → Search → Select → Request</p>
+      </div>
+      <div class="bg-purple-50 p-2 rounded-lg text-center border border-purple-100">
+        <span class="text-xs font-bold text-purple-700">7-10</span>
+        <p class="text-[10px] text-slate-600">Sparraps Own → Reject → Subscribed → Accept</p>
+      </div>
+      <div class="bg-emerald-50 p-2 rounded-lg text-center border border-emerald-100">
+        <span class="text-xs font-bold text-emerald-700">11-13</span>
+        <p class="text-[10px] text-slate-600">Price → Photo → Verify Image</p>
+      </div>
+      <div class="bg-amber-50 p-2 rounded-lg text-center border border-amber-100">
+        <span class="text-xs font-bold text-amber-700">14-18</span>
+        <p class="text-[10px] text-slate-600">Customer Sees → Accepts → Pay → Order → Barcode</p>
+      </div>
+      <div class="bg-rose-50 p-2 rounded-lg text-center border border-rose-100">
+        <span class="text-xs font-bold text-rose-700">19-22</span>
+        <p class="text-[10px] text-slate-600">Courier → Track → Deliver → Return Period</p>
+      </div>
+      <div class="bg-indigo-50 p-2 rounded-lg text-center border border-indigo-100">
+        <span class="text-xs font-bold text-indigo-700">23-24</span>
+        <p class="text-[10px] text-slate-600">Settlement → Complete</p>
+      </div>
+    </div>
+
+    <!-- Tracking Stages -->
+    <div class="mt-4 bg-slate-50/80 rounded-xl p-4 border border-slate-200/60">
+      <p class="text-xs font-semibold text-slate-700 mb-2">📦 Customer Tracking Stages:</p>
+      <div class="flex flex-wrap gap-2">
+        <span class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-xs">1. Order Confirmed</span>
+        <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-xs">2. Product Packed</span>
+        <span class="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-xs">3. Shipped</span>
+        <span class="bg-amber-100 text-amber-700 px-3 py-1 rounded-full text-xs">4. Out for Delivery</span>
+        <span class="bg-rose-100 text-rose-700 px-3 py-1 rounded-full text-xs">5. Delivered</span>
+      </div>
+    </div>
+  </div>
+</section>
+  <!-- Level 0 Data Flow Details -->
+  <div class="glass-card p-6 mt-4">
+    <h3 class="font-bold text-lg text-indigo-800"><i class="fas fa-exchange-alt mr-2"></i> Level 0 Data Flow Details</h3>
+    <div class="dataflow-grid mt-3 text-sm">
+      <div class="bg-white/30 p-3 rounded-xl"><span class="font-bold text-indigo-700">Customer → Sparraps (14):</span> Registration, Login, Vehicle, Search, Request, Image, Address, Approval, Payment, Return, Review, Support, OTP, Profile</div>
+      <div class="bg-white/30 p-3 rounded-xl"><span class="font-bold text-indigo-700">Sparraps → Customer (14):</span> Catalogue, Suggestions, Availability, Photo, Condition, Price, Delivery, Payment Confirm, Order Confirm, Tracking, Invoice, Return Status, Refund Status, Support</div>
+      <div class="bg-white/30 p-3 rounded-xl"><span class="font-bold text-indigo-700">Vendor → Sparraps (13):</span> Registration, KYC, Subscription, Specialisation, Availability, Price, Condition, Photo, Warranty, Quantity, Dispatch, Return Verify, Support</div>
+      <div class="bg-white/30 p-3 rounded-xl"><span class="font-bold text-indigo-700">Sparraps → Vendor (13):</span> KYC Approval, Subscription, Requests, Timer, Product Info, Pickup, Order Status, Return Request, Settlement, Performance, Support, Reports, Alerts</div>
+      <div class="bg-white/30 p-3 rounded-xl"><span class="font-bold text-indigo-700">Admin → Sparraps (12):</span> Products, Vehicle Master, Categories, Compatibility, Plans, Commission, Priority, Timers, Delivery Rules, Return Rules, Settlement Rules, Settings</div>
+      <div class="bg-white/30 p-3 rounded-xl"><span class="font-bold text-indigo-700">Sparraps → Admin (14):</span> Customer Info, Vendor Info, Requests, Responses, Orders, Payments, Deliveries, Returns, Refunds, Settlements, Reports, Alerts, Audit Logs, Analytics</div>
+    </div>
+  </div>
+</section>
+
+<!-- ADDITIONAL FLOWS SECTION -->
+<div id="flows" class="scroll-mt-24"></div>
+<section class="px-4 max-w-7xl mx-auto mt-10">
+  <h2 class="text-3xl font-bold text-indigo-900 flex items-center gap-3"><i class="fas fa-stream text-indigo-600"></i> Additional Flows</h2>
+  
+  <!-- Multiple Vendor Response -->
+  <div class="mermaid-wrapper glass-card mt-4 p-6">
+    <div class="flex items-center gap-3 mb-4">
+      <span class="bg-amber-600 text-white px-4 py-1 rounded-full text-xs font-bold">L2</span>
+      <h3 class="font-semibold text-lg">Multiple Vendor Response Flow</h3>
+    </div>
+    <div class="mermaid">
+      graph TD
+      R[Product Request] --> S["Sparraps Own<br>₹5,500"]
+      R --> A["Vendor A<br>₹5,200"]
+      R --> B["Vendor B<br>₹5,400"]
+      S --> SAVE[Save All Vendor Responses]
+      A --> SAVE
+      B --> SAVE
+      SAVE --> RULES["Apply Admin Selection Rules"]
+      RULES --> PRIORITY["Priority Plan"]
+      RULES --> PRICE["Best Price"]
+      RULES --> PERF["Best Performance"]
+      PRIORITY --> SELECT["Select Product Option"]
+      PRICE --> SELECT
+      PERF --> SELECT
+      SELECT --> REVIEW["Admin Review (if required)"]
+      REVIEW --> SHOW["Show Option to Customer<br>(Vendor identity hidden)"]
+    </div>
+    <p class="text-sm text-gray-600 mt-3"><i class="fas fa-info-circle text-indigo-500 mr-1"></i> Customer will not know how many vendors responded or which vendor was selected.</p>
+  </div>
+  
+  <!-- Customer Approval and Payment -->
+  <div class="mermaid-wrapper glass-card mt-4 p-6">
+    <div class="flex items-center gap-3 mb-4">
+      <span class="bg-amber-600 text-white px-4 py-1 rounded-full text-xs font-bold">L2</span>
+      <h3 class="font-semibold text-lg">Customer Approval & Payment Flow</h3>
+    </div>
+    <div class="mermaid">
+      graph TD
+      V["Verified Product Option"] --> SHOW["Show to Customer:<br>• Product Photo • Condition • Price • Warranty • Estimated Delivery"]
+      SHOW --> DECISION{Customer Decision}
+      DECISION -->|Reject| REJECT["Search Next Product Option<br>→ Next Vendor Response"]
+      DECISION -->|Accept| ACCEPT["Create Payment Order<br>→ Send to Razorpay"]
+      ACCEPT --> PAYMENT[Payment Processing]
+      PAYMENT -->|Failed| RETRY[Retry Payment]
+      PAYMENT -->|Success| CONFIRM["Confirm Order<br>Notify Vendor"]
+    </div>
+    <p class="text-sm text-gray-600 mt-3"><i class="fas fa-info-circle text-indigo-500 mr-1"></i> Payment collected after: product availability confirmed → vendor submits actual photo → image verified → customer accepts product and price.</p>
+  </div>
+  
+  <!-- Sparraps Own Vendor Panel -->
+  <div class="glass-card p-5 mt-4">
+    <h4 class="font-bold text-indigo-800"><i class="fas fa-building mr-2"></i>Sparraps Own Vendor Panel Flow</h4>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3 text-sm">
+      <div class="bg-white/30 p-3 rounded-xl">
+        <span class="font-semibold">Features:</span>
+        <ul class="list-disc list-inside text-gray-700 mt-1">
+          <li>No subscription charge</li>
+          <li>Receives every request first</li>
+          <li>Maintains own prices & inventory</li>
+          <li>Uploads actual product images</li>
+          <li>Highest priority (configurable)</li>
+          <li>Operates through same order system</li>
+        </ul>
+      </div>
+      <div class="bg-white/30 p-3 rounded-xl">
+        <span class="font-semibold">Flow:</span>
+        <div class="text-gray-700 mt-1 text-xs leading-relaxed">
+          Customer Request → Sparraps Own Vendor Panel → Check Inventory →<br>
+          Available → Enter Own Price + Upload Image → Customer Approval → Order Fulfilled<br>
+          Not Available → Reject or Timer Expires → Send to Subscribed Vendors
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Confidentiality -->
+  <div class="glass-card p-5 mt-4">
+    <h4 class="font-bold text-indigo-800"><i class="fas fa-user-secret mr-2"></i>Customer & Vendor Confidentiality</h4>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2 text-sm">
+      <div class="bg-white/30 p-3 rounded-xl">
+        <span class="font-semibold text-red-600">Hidden from Customers:</span>
+        <ul class="list-disc list-inside text-gray-700 mt-1">
+          <li>Vendor name, phone, shop name</li>
+          <li>Vendor address & location</li>
+          <li>Vendor email, GST, bank details</li>
+        </ul>
+        <p class="text-xs text-gray-500 mt-1"><i class="fas fa-shield-alt mr-1"></i>Customer-facing barcode does not disclose vendor info</p>
+      </div>
+      <div class="bg-white/30 p-3 rounded-xl">
+        <span class="font-semibold text-blue-600">Hidden from Vendors (operationally):</span>
+        <ul class="list-disc list-inside text-gray-700 mt-1">
+          <li>Customer phone number</li>
+          <li>Customer email</li>
+          <li>Customer direct communication</li>
+          <li>Customer payment details</li>
+        </ul>
+        <p class="text-xs text-gray-500 mt-1"><i class="fas fa-truck mr-1"></i>Logistics system receives only pickup/delivery information</p>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Admin Panel Controls -->
+  <div class="glass-card p-5 mt-4">
+    <h4 class="font-bold text-indigo-800"><i class="fas fa-sliders-h mr-2"></i>Admin Panel Controls (26+)</h4>
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 mt-3 text-xs">
+      <div class="bg-white/30 p-2 rounded-lg"><span class="font-semibold">Product:</span> Listings, Categories, Compatibility</div>
+      <div class="bg-white/30 p-2 rounded-lg"><span class="font-semibold">Vehicle:</span> Companies, Models, Variants, Years, Fuel</div>
+      <div class="bg-white/30 p-2 rounded-lg"><span class="font-semibold">Vendor:</span> Approvals, Subscriptions, Priority, KYC</div>
+      <div class="bg-white/30 p-2 rounded-lg"><span class="font-semibold">Operations:</span> Timers, Responses, Prices, Photos</div>
+      <div class="bg-white/30 p-2 rounded-lg"><span class="font-semibold">Orders:</span> Customer Orders, Payments, Logistics</div>
+      <div class="bg-white/30 p-2 rounded-lg"><span class="font-semibold">Returns:</span> Returns, Refunds, Disputes</div>
+      <div class="bg-white/30 p-2 rounded-lg"><span class="font-semibold">Financial:</span> Settlements, Commission Rules</div>
+      <div class="bg-white/30 p-2 rounded-lg"><span class="font-semibold">Support:</span> Tickets, Notifications</div>
+      <div class="bg-white/30 p-2 rounded-lg"><span class="font-semibold">System:</span> Reports, Roles, Permissions, Audit Logs, Settings</div>
+    </div>
+  </div>
+  
+  <!-- Vendor Price Example Table -->
+  <div class="glass-card p-5 mt-4">
+    <h4 class="font-bold text-indigo-800"><i class="fas fa-table mr-2"></i>Vendor Price & Availability Example</h4>
+    <div class="overflow-x-auto mt-3">
+      <table class="w-full text-sm border-collapse">
+        <thead>
+          <tr class="bg-indigo-100/50">
+            <th class="p-2 text-left border border-white/30">Product</th>
+            <th class="p-2 text-left border border-white/30">Vendor</th>
+            <th class="p-2 text-left border border-white/30">Condition</th>
+            <th class="p-2 text-left border border-white/30">Vendor Price</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-white/30">
+          <tr><td class="p-2 border border-white/30">Swift Front Bumper</td><td class="p-2 border border-white/30">Sparraps Own Vendor</td><td class="p-2 border border-white/30">New</td><td class="p-2 border border-white/30 font-semibold">₹5,500</td></tr>
+          <tr><td class="p-2 border border-white/30">Swift Front Bumper</td><td class="p-2 border border-white/30">Vendor A</td><td class="p-2 border border-white/30">New</td><td class="p-2 border border-white/30">₹5,200</td></tr>
+          <tr><td class="p-2 border border-white/30">Swift Front Bumper</td><td class="p-2 border border-white/30">Vendor B</td><td class="p-2 border border-white/30">Used</td><td class="p-2 border border-white/30">₹2,800</td></tr>
+          <tr><td class="p-2 border border-white/30">Swift Front Bumper</td><td class="p-2 border border-white/30">Vendor C</td><td class="p-2 border border-white/30">Refurbished</td><td class="p-2 border border-white/30">₹3,600</td></tr>
+        </tbody>
+      </table>
+      <p class="text-xs text-gray-500 mt-2"><i class="fas fa-eye-slash mr-1"></i>Customer will not see vendor names. Customer may see different options based on condition, price, photo, warranty, delivery time.</p>
+    </div>
+  </div>
+  
+  <!-- Image Processing Steps -->
+  <div class="glass-card p-5 mt-4">
+    <h4 class="font-bold text-indigo-800"><i class="fas fa-image mr-2"></i>Product Image Processing Steps</h4>
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-2 mt-3">
+      <div class="bg-white/30 p-2 rounded-lg text-sm flex items-center gap-2"><span class="bg-indigo-100 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold text-indigo-700">1</span> Remove background</div>
+      <div class="bg-white/30 p-2 rounded-lg text-sm flex items-center gap-2"><span class="bg-indigo-100 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold text-indigo-700">2</span> Replace with white background</div>
+      <div class="bg-white/30 p-2 rounded-lg text-sm flex items-center gap-2"><span class="bg-indigo-100 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold text-indigo-700">3</span> Improve brightness</div>
+      <div class="bg-white/30 p-2 rounded-lg text-sm flex items-center gap-2"><span class="bg-indigo-100 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold text-indigo-700">4</span> Improve product visibility</div>
+      <div class="bg-white/30 p-2 rounded-lg text-sm flex items-center gap-2"><span class="bg-indigo-100 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold text-indigo-700">5</span> Crop unnecessary surroundings</div>
+      <div class="bg-white/30 p-2 rounded-lg text-sm flex items-center gap-2"><span class="bg-indigo-100 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold text-indigo-700">6</span> Check image blur</div>
+      <div class="bg-white/30 p-2 rounded-lg text-sm flex items-center gap-2"><span class="bg-indigo-100 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold text-indigo-700">7</span> Detect duplicate images</div>
+      <div class="bg-white/30 p-2 rounded-lg text-sm flex items-center gap-2"><span class="bg-indigo-100 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold text-indigo-700">8</span> Add Sparraps watermark</div>
+      <div class="bg-white/30 p-2 rounded-lg text-sm flex items-center gap-2"><span class="bg-indigo-100 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold text-indigo-700">9</span> Save original & edited versions</div>
+    </div>
+  </div>
+</section>
+
+<!-- BUSINESS RULES (20) -->
+<div id="rules" class="scroll-mt-24"></div>
+<section class="px-4 max-w-7xl mx-auto mt-10">
+  <h2 class="text-3xl font-bold text-indigo-900 flex items-center gap-3"><i class="fas fa-gavel text-indigo-600"></i> 20 Business rules</h2>
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4">
+    <div class="glass-card p-3 text-sm flex items-start gap-2"><span class="text-indigo-600 font-bold">1.</span> Only Sparraps Admin creates product listings.</div>
+    <div class="glass-card p-3 text-sm flex items-start gap-2"><span class="text-indigo-600 font-bold">2.</span> Vendors cannot create public listings.</div>
+    <div class="glass-card p-3 text-sm flex items-start gap-2"><span class="text-indigo-600 font-bold">3.</span> Vendors set own price for admin products.</div>
+    <div class="glass-card p-3 text-sm flex items-start gap-2"><span class="text-indigo-600 font-bold">4.</span> Sparraps internal vendor has highest priority.</div>
+    <div class="glass-card p-3 text-sm flex items-start gap-2"><span class="text-indigo-600 font-bold">5.</span> Request goes to internal vendor first.</div>
+    <div class="glass-card p-3 text-sm flex items-start gap-2"><span class="text-indigo-600 font-bold">6.</span> If internal rejects, request goes to subscribed vendors.</div>
+    <div class="glass-card p-3 text-sm flex items-start gap-2"><span class="text-indigo-600 font-bold">7.</span> Priority tiers: Platinum, Gold, Silver, Basic, Trial.</div>
+    <div class="glass-card p-3 text-sm flex items-start gap-2"><span class="text-indigo-600 font-bold">8.</span> Admin configures timer & routing rules.</div>
+    <div class="glass-card p-3 text-sm flex items-start gap-2"><span class="text-indigo-600 font-bold">9.</span> Customer & vendor never communicate directly.</div>
+    <div class="glass-card p-3 text-sm flex items-start gap-2"><span class="text-indigo-600 font-bold">10.</span> Vendor identity hidden from customer.</div>
+    <div class="glass-card p-3 text-sm flex items-start gap-2"><span class="text-indigo-600 font-bold">11.</span> Vendor uploads actual product photo after acceptance.</div>
+    <div class="glass-card p-3 text-sm flex items-start gap-2"><span class="text-indigo-600 font-bold">12.</span> Images are background-removed & verified.</div>
+    <div class="glass-card p-3 text-sm flex items-start gap-2"><span class="text-indigo-600 font-bold">13.</span> Payment after customer approves product option.</div>
+    <div class="glass-card p-3 text-sm flex items-start gap-2"><span class="text-indigo-600 font-bold">14.</span> All payments to Sparraps via Razorpay.</div>
+    <div class="glass-card p-3 text-sm flex items-start gap-2"><span class="text-indigo-600 font-bold">15.</span> Sparraps arranges pickup & delivery.</div>
+    <div class="glass-card p-3 text-sm flex items-start gap-2"><span class="text-indigo-600 font-bold">16.</span> Unique barcode/QR per product.</div>
+    <div class="glass-card p-3 text-sm flex items-start gap-2"><span class="text-indigo-600 font-bold">17.</span> 7-day return period from delivery.</div>
+    <div class="glass-card p-3 text-sm flex items-start gap-2"><span class="text-indigo-600 font-bold">18.</span> Return rejected if barcode missing/damaged.</div>
+    <div class="glass-card p-3 text-sm flex items-start gap-2"><span class="text-indigo-600 font-bold">19.</span> Vendor settlement frequency configurable.</div>
+    <div class="glass-card p-3 text-sm flex items-start gap-2"><span class="text-indigo-600 font-bold">20.</span> All settings manageable via admin panel.</div>
+  </div>
+</section>
+
+<!-- BACK TO TOP -->
+<button id="backToTop" class="back-to-top btn-grad p-3 rounded-full shadow-xl w-12 h-12 flex items-center justify-center text-white"><i class="fas fa-arrow-up text-xl"></i></button>
+
+<script>
+  mermaid.initialize({ 
+    theme: 'base',
+    themeVariables: {
+      background: 'transparent',
+      primaryColor: '#7c3aed',
+      primaryTextColor: '#1e1b2e',
+      secondaryColor: '#a78bfa',
+      tertiaryColor: '#e0d4ff',
+      fontFamily: 'Inter, sans-serif',
+      fontSize: '13px',
+      nodeBorder: '2px solid #7c3aed',
+      clusterBkg: 'rgba(124,58,237,0.04)',
+      clusterBorder: '1.5px solid #a78bfa',
+      edgeLabelBackground: 'rgba(255,255,255,0.75)',
+      lineColor: '#6d28d9'
+    },
+    securityLevel: 'loose',
+    flowchart: { useMaxWidth: true, htmlLabels: true, curve: 'basis', padding: 20 }
+  });
+
+  // Accordion toggles
+  document.querySelectorAll('.accordion-toggle').forEach(el => {
+    el.addEventListener('click', function() {
+      const parent = this.closest('.accordion');
+      parent.classList.toggle('accordion-open');
+      const icon = this.querySelector('.fa-plus, .fa-minus');
+      if (icon) { icon.classList.toggle('fa-plus'); icon.classList.toggle('fa-minus'); }
+    });
+  });
+
+  // Tabs
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = {
+    'tab-customer': document.getElementById('tab-customer'),
+    'tab-vendor': document.getElementById('tab-vendor'),
+    'tab-admin': document.getElementById('tab-admin')
+  };
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      tabBtns.forEach(b => b.classList.remove('tab-active'));
+      this.classList.add('tab-active');
+      Object.keys(tabContents).forEach(key => tabContents[key].classList.add('hidden'));
+      const target = this.dataset.tab;
+      if (tabContents[target]) tabContents[target].classList.remove('hidden');
+    });
+  });
+
+  // Back to top
+  const backBtn = document.getElementById('backToTop');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 500) backBtn.classList.remove('hidden'); else backBtn.classList.add('hidden');
+  });
+  backBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+  // Scrollspy
+  const sections = ['overview','entities','processes','datastores','dfd','rules','flows'];
+  const navLinks = document.querySelectorAll('nav a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(id => {
+      const el = document.getElementById(id);
+      if (el && el.getBoundingClientRect().top < 150) current = id;
+    });
+    navLinks.forEach(a => {
+      const href = a.getAttribute('href');
+      if (href && href.substring(1) === current) {
+        a.style.color = '#7c3aed';
+        a.style.fontWeight = '600';
+      } else {
+        a.style.color = '';
+        a.style.fontWeight = '500';
+      }
+    });
+  });
+</script>
+</body>
+</html>
